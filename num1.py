@@ -86,11 +86,26 @@ cursor = connection.cursor()
 ##for user in users_list:
 ##    print(user)
 
-cursor.execute('SELECT * FROM Users WHERE age IS NULL')
-unknown_age_users = cursor.fetchall()
+##cursor.execute('SELECT * FROM Users WHERE age IS NULL')
+##unknown_age_users = cursor.fetchall()
+##
+##for user in unknown_age_users:
+##    print(user)
 
-for user in unknown_age_users:
-    print(user)
+try:
+    # Начинаем транзакцию
+    cursor.execute('BEGIN')
+
+    # Выполняем операции
+    cursor.execute('INSERT INTO Users (username, email) VALUES (?, ?)', ('user1', 'user1@example.com'))
+    cursor.execute('INSERT INTO Users (username, email) VALUES (?, ?)', ('user2', 'user2@example.com'))
+
+    # Подтверждаем изменения
+    cursor.execute('COMMIT')
+
+except:
+    # Отменяем транзакцию в случае ошибки
+    cursor.execute('ROLLBACK')
 
 connection.commit()
 connection.close()
