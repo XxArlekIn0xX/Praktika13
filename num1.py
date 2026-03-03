@@ -32,9 +32,12 @@ cursor = connection.cursor()
 ##total_users = cursor.fetchone()[0]
 ##print('Общее количество пользователей:', total_users)
 
-cursor.execute('SELECT SUM(age) FROM Users')
-total_age = cursor.fetchone()[0]
-print('Общая сумма возрастов пользователей: ', total_age)
+##cursor.execute('SELECT SUM(age) FROM Users')
+##total_age = cursor.fetchone()[0]
+##print('Общая сумма возрастов пользователей: ', total_age)
 
+cursor.execute('SELECT AVG(age) FROM Users')
+average_age = cursor.fetchone()[0]
+print('Средний возраст пользователей:', average_age)
 connection.commit()
 connection.close()
