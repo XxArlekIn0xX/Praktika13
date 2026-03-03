@@ -48,10 +48,27 @@ cursor = connection.cursor()
 ##max_age = cursor.fetchone()[0]
 ##print('Максимальный возраст среди пользователей:',max_age)
 
+##cursor.execute('SELECT * FROM Users')
+##users = cursor.fetchall()
+##for user in users:
+##    print(user)
+
 cursor.execute('SELECT * FROM Users')
-users = cursor.fetchall()
-for user in users:
-    print(user)
+first_user = cursor.fetchone()
+print(first_user)
+
+print("=" * 30)
+
+
+cursor.execute('SELECT * FROM Users')
+first_five_users = cursor.fetchmany(5)
+print(first_five_users)
+
+print("=" * 30)
+
+cursor.execute('SELECT * FROM Users')
+all_users = cursor.fetchall()
+print(all_users)    
 
 connection.commit()
 connection.close()
