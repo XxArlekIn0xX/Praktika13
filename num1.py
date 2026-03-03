@@ -23,9 +23,14 @@ cursor = connection.cursor()
 ##    print(user)
 ##cursor.execute('SELECT Username, age FROM Users WHERE age > ?', (25,))
 ##cursor.execute('SELECT AVG(age) FROM Users GROUP BY age HAVING AVG(age) > ?', (30,))
-cursor.execute('SELECT Username, age FROM Users GROUP BY age HAVING AVG(age) > ? ORDER BY age DESC', (30,))
-results = cursor.fetchall()
-for row in results:
-    print(row)
+##cursor.execute('SELECT Username, age FROM Users GROUP BY age HAVING AVG(age) > ? ORDER BY age DESC', (30,))
+##results = cursor.fetchall()
+##for row in results:
+##    print(row)
+
+cursor.execute('SELECT COUNT(*) FROM Users')
+total_users = cursor.fetchone()[0]
+print('Общее количество пользователей:', total_users)
+
 connection.commit()
 connection.close()
