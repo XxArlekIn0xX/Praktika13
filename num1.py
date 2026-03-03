@@ -22,7 +22,7 @@ cursor = connection.cursor()
 ##for user in users:
 ##    print(user)
 ##cursor.execute('SELECT Username, age FROM Users WHERE age > ?', (25,))
-cursor.execute('SELECT AVG(age) FROM Users GROUP BY age')
+cursor.execute('SELECT AVG(age) FROM Users GROUP BY age HAVING AVG(age) > ?', (30,))
 results = cursor.fetchall()
 for row in results:
     print(row)
