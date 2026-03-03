@@ -12,7 +12,8 @@ cursor = connection.cursor()
 ##)
 ##''')
 
-cursor.execute('CREATE INDEX idx_email ON Users (email)')
+##cursor.execute('CREATE INDEX idx_email ON Users (email)')
 
+cursor.execute('INSERT INTO Users (username, email, age) VALUES (?, ?, ?)', ('newuser', 'neuser@example.com', 28))
 connection.commit()
 connection.close()
