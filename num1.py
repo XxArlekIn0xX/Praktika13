@@ -16,6 +16,10 @@ cursor = connection.cursor()
 
 ##cursor.execute('INSERT INTO Users (username, email, age) VALUES (?, ?, ?)', ('newuser', 'neuser@example.com', 28))
 ##cursor.execute('UPDATE Users SET age = ? WHERE username = ? ', (29, 'newuser'))
-cursor.execute('DELETE FROM Users WHERE username = ? ', ('newuser',))
+##cursor.execute('DELETE FROM Users WHERE username = ? ', ('newuser',))
+cursor.execute('SELECT * FROM Users')
+users = cursor.fetchall()
+for user in users:
+    print(user)
 connection.commit()
 connection.close()
