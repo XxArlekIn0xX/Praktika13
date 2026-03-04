@@ -141,26 +141,28 @@ import sqlite3
 connection = sqlite3.connect('Shiba_Inu.db')
 cursor = connection.cursor()
 
-# Создаем таблицу Users
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS Dogs (
-id INTEGER PRIMARY KEY,
-username TEXT NOT NULL,
-email TEXT NOT NULL,
-age INTEGER,
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
-''')
+### Создаем таблицу Users
+##cursor.execute('''
+##CREATE TABLE IF NOT EXISTS Dogs (
+##id INTEGER PRIMARY KEY,
+##username TEXT NOT NULL,
+##email TEXT NOT NULL,
+##age INTEGER,
+##created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+##)
+##''')
+##
+### Создаем триггер для обновления времени создания при вставке новой записи
+##cursor.execute('''
+##CREATE TRIGGER IF NOT EXISTS update_created_at
+##AFTER INSERT ON Dogs
+##BEGIN
+##UPDATE Dogs SET created_at = CURRENT_TIMESTAMP WHERE
+##id = NEW.id;
+##END;
+##''')
 
-# Создаем триггер для обновления времени создания при вставке новой записи
-cursor.execute('''
-CREATE TRIGGER IF NOT EXISTS update_created_at
-AFTER INSERT ON Dogs
-BEGIN
-UPDATE Dogs SET created_at = CURRENT_TIMESTAMP WHERE
-id = NEW.id;
-END;
-''')
+cursor.execute('CREATE INDEX idx_username ON Dogs (username)')
 
 connection.commit()
 connection.close()
