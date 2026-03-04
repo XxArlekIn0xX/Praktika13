@@ -45,6 +45,7 @@ class Ui_MainWindow(object):
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
+        self.tableWidget.setSelectionMode(QtWidgets.QTableWidget.SingleSelection)
         self.gridLayout.addWidget(self.tableWidget, 0, 0, 1, 5)
         self.pushButton_Insert = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.pushButton_Insert.setStyleSheet("font: italic 20pt \"Monotype Corsiva\";")
@@ -64,8 +65,38 @@ class Ui_MainWindow(object):
         self.pushButton_Exit.clicked.connect(MainWindow.close) # type: ignore
         self.pushButton_Insert.clicked.connect(self.insert)
         self.pushButton_Delete.clicked.connect(self.delete)
+        self.pushButton_Update.clicked.connect(self.Update)
+        self.tableWidget.itemChanged.connect(self.on_cell_edited)
+        self.tableWidget.itemClicked.connect(self.item)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    def Update(self):
+        self.tableWidget.blockSignals(True)
+        self.load()
+        self.tableWidget.blockSignals(False)
+    def item(self, item):
+        global old_value
+        old_value = item.text()
+    def on_cell_edited(self, item):
+        connection = sqlite3.connect('Shiba_Inu.db')
+        cursor = connection.cursor()
+        row = item.row()
+        value = item.text()
+        column = item.column()
+        if column == 4:
+           QMessageBox.critical(None, "Error", "НЕЛЬЗЯ РЕДАКТИРОВАТЬ ЭТО ПОЛЕ. ПОЖАЛУЙСТА ОБНОВИ ТАБЛИЦУ ЧЕРЕЗ КНОПКУ")
+           return
+        IDI = self.tableWidget.item(row, 0).text()
+        column_names = ['id', 'username', 'email', 'age']
+        column = column_names[column]
+        try:
+            cursor.execute(f"UPDATE Dogs SET {column} = ? WHERE id = ?", (value, int(IDI)))
+            connection.commit()
+            connection.close()
+            QMessageBox.information(None, "Error", "Вы ввели подходящее значение")
+        except:
+             QMessageBox.critical(None, "Error", "Вы ввели неподходящее значение. Обнови таблицу")
+             return
     def load(self):
         connection = sqlite3.connect('Shiba_Inu.db')
         cursor = connection.cursor()
@@ -81,6 +112,7 @@ class Ui_MainWindow(object):
                 self.tableWidget.setItem(i,j, QtWidgets.QTableWidgetItem(str(value)))
 
         cursor.close()
+        return
     def insert(self):
         connection = sqlite3.connect('Shiba_Inu.db')
         cursor = connection.cursor()
@@ -90,12 +122,32 @@ class Ui_MainWindow(object):
             text = text.split(', ')
             if len(text) != 4:
                 QMessageBox.critical(None, "Error", "Пожалуйста, введите только следующие поля : id, username, email, age")
-                return;
+                return
             else:
                 try:
                     cursor.execute('INSERT INTO Dogs (id, username, email, age) VALUES (?, ?, ?, ?)', (text[0], text[1], text[2], text[3]))
                 except:
                    QMessageBox.critical(None, "Error", "Запись с таким кодом уже есть")
+                connection.commit()
+                connection.close()
+                self.load()
+        else:
+            pass
+    def delete(self):
+        connection = sqlite3.connect('Shiba_Inu.db')
+        cursor = connection.cursor()
+        text, ok = QInputDialog.getText(None, "Удаление записи", "Введите только код собаки:")
+
+        if ok:
+            text = text.split(', ')
+            if len(text) != 1:
+                QMessageBox.critical(None, "Error", "Пожалуйста, введите только следующее поле : id")
+                return
+            else:
+                try:
+                    cursor.execute('DELETE FROM Dogs WHERE id = ? ', (text[0],))
+                except:
+                   QMessageBox.critical(None, "Error", "Запись с таким кодом уже удалена")
                 connection.commit()
                 connection.close()
                 self.load()
