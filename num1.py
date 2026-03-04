@@ -1,7 +1,7 @@
 import sqlite3
 
-connection = sqlite3.connect('my_database.db')
-cursor = connection.cursor()
+##connection = sqlite3.connect('my_database.db')
+##cursor = connection.cursor()
 
 ##cursor.execute('''
 ##CREATE TABLE IF NOT EXISTS Users (
@@ -127,15 +127,40 @@ cursor = connection.cursor()
 ##for user in users:
 ##    print(user)
 
-# Создаем представление для активных пользователей
-cursor.execute('CREATE VIEW ActiveUsers AS SELECT * FROM Users WHERE is_activity = 1')
+### Создаем представление для активных пользователей
+##cursor.execute('CREATE VIEW ActiveUsers AS SELECT * FROM Users WHERE is_activity = 1')
+##
+##cursor.execute('SELECT * FROM ActiveUsers')
+##active_users = cursor.fetchall()
+##
+### Выводим результаты
+##for user in active_users:
+##    print(user)
 
-cursor.execute('SELECT * FROM ActiveUsers')
-active_users = cursor.fetchall()
+# Устанавливаем соединение с базой данных
+connection = sqlite3.connect('Shiba_Inu.db')
+cursor = connection.cursor()
 
-# Выводим результаты
-for user in active_users:
-    print(user)
+# Создаем таблицу Users
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Dogs (
+id INTEGER PRIMARY KEY,
+username TEXT NOT NULL,
+email TEXT NOT NULL,
+age INTEGER,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+''')
+
+# Создаем триггер для обновления времени создания при вставке новой записи
+cursor.execute('''
+CREATE TRIGGER IF NOT EXISTS update_created_at
+AFTER INSERT ON Dogs
+BEGIN
+UPDATE Dogs SET created_at = CURRENT_TIMESTAMP WHERE
+id = NEW.id;
+END;
+''')
 
 connection.commit()
 connection.close()
