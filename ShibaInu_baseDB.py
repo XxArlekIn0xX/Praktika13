@@ -9,7 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import sqlite3
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -50,8 +50,9 @@ class Ui_MainWindow(object):
 "gridline-color: rgb(150, 143, 124);\n"
 "border-color: rgb(163, 156, 134);")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(0)
+        self.tableWidget.setColumnCount(5)
         self.tableWidget.setRowCount(0)
+        self.tableWidget.setHorizontalHeaderLabels(['ID', 'Имя', 'Почта', 'Возраст', 'Когда создалась запись']) 
         self.gridLayout.addWidget(self.tableWidget, 0, 0, 1, 5)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -64,8 +65,27 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.pushButton_Exit.clicked.connect(MainWindow.close) # type: ignore
+        self.load()
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    def load(self):
+        connection = sqlite3.connect('Shiba_Inu.db')
+        cursor = connection.cursor()
 
+        cursor.execute('SELECT * FROM Dogs')
+        dogs = cursor.fetchall()
+        for dog in dogs:
+            print(dog)
+
+        
+        self.tableWidget.setRowCount(len(dogs))
+        self.tableWidget.setColumnCount(len(dogs[0]) if dogs else 0)
+
+        for i, row in enumerate(dogs):
+            for j, value in enumerate(row):
+                self.tableWidget.setItem(i,j, QtWidgets.QTableWidgetItem(str(value)))
+
+        cursor.close()
+        
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "База Данных \"Сиба Ину\""))
