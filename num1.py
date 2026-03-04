@@ -119,12 +119,22 @@ cursor = connection.cursor()
 ##        # Ошибки будут приводить к автоматическому откату транзакции
 ##        pass
 
-query = 'SELECT * FROM Users WHERE age > ?'
-cursor.execute(query, (25,))
-users = cursor.fetchall()
+##query = 'SELECT * FROM Users WHERE age > ?'
+##cursor.execute(query, (25,))
+##users = cursor.fetchall()
+##
+### Выводим результаты
+##for user in users:
+##    print(user)
+
+# Создаем представление для активных пользователей
+cursor.execute('CREATE VIEW ActiveUsers AS SELECT * FROM Users WHERE is_activity = 1')
+
+cursor.execute('SELECT * FROM ActiveUsers')
+active_users = cursor.fetchall()
 
 # Выводим результаты
-for user in users:
+for user in active_users:
     print(user)
 
 connection.commit()
