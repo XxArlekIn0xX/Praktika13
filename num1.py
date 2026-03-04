@@ -1,7 +1,7 @@
 import sqlite3
 
-##connection = sqlite3.connect('my_database.db')
-##cursor = connection.cursor()
+connection = sqlite3.connect('my_database.db')
+cursor = connection.cursor()
 
 ##cursor.execute('''
 ##CREATE TABLE IF NOT EXISTS Users (
@@ -107,17 +107,25 @@ import sqlite3
 ##    # Отменяем транзакцию в случае ошибки
 ##    cursor.execute('ROLLBACK')
 
-with sqlite3.connect('my_database.db') as connection:
-    cursor = connection.cursor()
-    try:
-        # Начинаем транзакцию автоматически
-        with connection:
-            # Выполняем операции
-            cursor.execute('INSERT INTO Users (username, email) VALUES (?, ?)', ('user3', 'user3@example.com'))
-            cursor.execute('INSERT INTO Users (username, email) VALUES (?, ?)', ('user4', 'user4@example.com'))
-    except:
-        # Ошибки будут приводить к автоматическому откату транзакции
-        pass
+##with sqlite3.connect('my_database.db') as connection:
+##    cursor = connection.cursor()
+##    try:
+##        # Начинаем транзакцию автоматически
+##        with connection:
+##            # Выполняем операции
+##            cursor.execute('INSERT INTO Users (username, email) VALUES (?, ?)', ('user3', 'user3@example.com'))
+##            cursor.execute('INSERT INTO Users (username, email) VALUES (?, ?)', ('user4', 'user4@example.com'))
+##    except:
+##        # Ошибки будут приводить к автоматическому откату транзакции
+##        pass
+
+query = 'SELECT * FROM Users WHERE age > ?'
+cursor.execute(query, (25,))
+users = cursor.fetchall()
+
+# Выводим результаты
+for user in users:
+    print(user)
 
 connection.commit()
 connection.close()
