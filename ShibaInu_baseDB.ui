@@ -37,26 +37,6 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="pushButton_Insert">
-       <property name="styleSheet">
-        <string notr="true">font: italic 20pt &quot;Monotype Corsiva&quot;;</string>
-       </property>
-       <property name="text">
-        <string>INSERT</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pushButton_Select">
-       <property name="styleSheet">
-        <string notr="true">font: italic 20pt &quot;Monotype Corsiva&quot;;</string>
-       </property>
-       <property name="text">
-        <string>SELECT</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="2">
       <widget class="QPushButton" name="pushButton_Update">
        <property name="styleSheet">
@@ -84,6 +64,16 @@
 font: italic 16pt &quot;Monotype Corsiva&quot;;
 gridline-color: rgb(150, 143, 124);
 border-color: rgb(163, 156, 134);</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <widget class="QPushButton" name="pushButton_Insert">
+       <property name="styleSheet">
+        <string notr="true">font: italic 20pt &quot;Monotype Corsiva&quot;;</string>
+       </property>
+       <property name="text">
+        <string>INSERT</string>
        </property>
       </widget>
      </item>

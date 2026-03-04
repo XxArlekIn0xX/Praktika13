@@ -10,6 +10,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sqlite3
+from PyQt5.QtWidgets import QApplication, QDialog, QInputDialog, QMessageBox
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -28,14 +29,6 @@ class Ui_MainWindow(object):
         self.pushButton_Delete.setStyleSheet("font: italic 20pt \"Monotype Corsiva\";")
         self.pushButton_Delete.setObjectName("pushButton_Delete")
         self.gridLayout.addWidget(self.pushButton_Delete, 1, 3, 1, 1)
-        self.pushButton_Insert = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.pushButton_Insert.setStyleSheet("font: italic 20pt \"Monotype Corsiva\";")
-        self.pushButton_Insert.setObjectName("pushButton_Insert")
-        self.gridLayout.addWidget(self.pushButton_Insert, 1, 1, 1, 1)
-        self.pushButton_Select = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.pushButton_Select.setStyleSheet("font: italic 20pt \"Monotype Corsiva\";")
-        self.pushButton_Select.setObjectName("pushButton_Select")
-        self.gridLayout.addWidget(self.pushButton_Select, 1, 0, 1, 1)
         self.pushButton_Update = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.pushButton_Update.setStyleSheet("font: italic 20pt \"Monotype Corsiva\";")
         self.pushButton_Update.setObjectName("pushButton_Update")
@@ -50,10 +43,13 @@ class Ui_MainWindow(object):
 "gridline-color: rgb(150, 143, 124);\n"
 "border-color: rgb(163, 156, 134);")
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
-        self.tableWidget.setHorizontalHeaderLabels(['ID', 'Имя', 'Почта', 'Возраст', 'Когда создалась запись']) 
         self.gridLayout.addWidget(self.tableWidget, 0, 0, 1, 5)
+        self.pushButton_Insert = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton_Insert.setStyleSheet("font: italic 20pt \"Monotype Corsiva\";")
+        self.pushButton_Insert.setObjectName("pushButton_Insert")
+        self.gridLayout.addWidget(self.pushButton_Insert, 1, 0, 1, 2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
@@ -62,38 +58,57 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.load()
 
         self.retranslateUi(MainWindow)
         self.pushButton_Exit.clicked.connect(MainWindow.close) # type: ignore
-        self.load()
+        self.pushButton_Insert.clicked.connect(self.insert)
+        self.pushButton_Delete.clicked.connect(self.delete)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
     def load(self):
         connection = sqlite3.connect('Shiba_Inu.db')
         cursor = connection.cursor()
 
         cursor.execute('SELECT * FROM Dogs')
         dogs = cursor.fetchall()
-        for dog in dogs:
-            print(dog)
-
-        
         self.tableWidget.setRowCount(len(dogs))
-        self.tableWidget.setColumnCount(len(dogs[0]) if dogs else 0)
+        self.tableWidget.setColumnCount(5)
+        self.tableWidget.setHorizontalHeaderLabels(['ID', 'Имя', 'Почта', 'Возраст', 'Когда создалась запись']) 
 
         for i, row in enumerate(dogs):
             for j, value in enumerate(row):
                 self.tableWidget.setItem(i,j, QtWidgets.QTableWidgetItem(str(value)))
 
         cursor.close()
-        
+    def insert(self):
+        connection = sqlite3.connect('Shiba_Inu.db')
+        cursor = connection.cursor()
+        text, ok = QInputDialog.getText(None, "Добавление записи", "Введите через запятую и пробел строку записи (код собаки и время создания не писать не вводить не вводить):")
+
+        if ok:
+            text = text.split(', ')
+            if len(text) != 4:
+                QMessageBox.critical(None, "Error", "Пожалуйста, введите только следующие поля : id, username, email, age")
+                return;
+            else:
+                try:
+                    cursor.execute('INSERT INTO Dogs (id, username, email, age) VALUES (?, ?, ?, ?)', (text[0], text[1], text[2], text[3]))
+                except:
+                   QMessageBox.critical(None, "Error", "Запись с таким кодом уже есть")
+                connection.commit()
+                connection.close()
+                self.load()
+        else:
+            pass
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "База Данных \"Сиба Ину\""))
         self.pushButton_Delete.setText(_translate("MainWindow", "DELETE"))
-        self.pushButton_Insert.setText(_translate("MainWindow", "INSERT"))
-        self.pushButton_Select.setText(_translate("MainWindow", "SELECT"))
         self.pushButton_Update.setText(_translate("MainWindow", "UPDATE"))
         self.pushButton_Exit.setText(_translate("MainWindow", "EXIT"))
+        self.pushButton_Insert.setText(_translate("MainWindow", "INSERT"))
 
 
 if __name__ == "__main__":
