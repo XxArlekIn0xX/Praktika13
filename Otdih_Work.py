@@ -62,7 +62,7 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
             self.update_form = putevka_window(self)
             current_row = self.ui.tableWidget.currentRow()
             putevka_data = self.tur_data[current_row]
-            self.update_form. putevka_id = putevka_data[0]
+            self.update_form.putevka_id = putevka_data[0]
             self.update_form.ui.lineEdit.setText(str(putevka_data[0]))      
             self.update_form.ui.lineEdit_2.setText(str(putevka_data[1]))
             self.update_form.ui.dateEdit.setDate(QDate.fromString(putevka_data[2], 'yyyy-MM-dd'))    
@@ -76,11 +76,31 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
             
         elif selected_text == "Туристы":
             self.update_form = klient_window(self)
+            current_row = self.ui.tableWidget.currentRow()
+            klient_data = self.klienti_data[current_row]
+            self.update_form.klient_id= klient_data[0]
+            self.update_form.ui.lineEdit.setText(str(klient_data[0]))      
+            self.update_form.ui.lineEdit_2.setText(str(klient_data[1]))  
+            self.update_form.ui.lineEdit_3.setText(str(klient_data[2]))  
+            self.update_form.ui.lineEdit_4.setText(str(klient_data[3]))  
+            self.update_form.ui.lineEdit_5.setText(str(klient_data[4]))  
+            self.update_form.ui.lineEdit_6.setText(str(klient_data[5]))  
             self.update_form.exec()
 
             
         elif selected_text == "Заказы":
             self.update_form = zakaz_window(self)
+            current_row = self.ui.tableWidget.currentRow()
+            putevka_data = self.tur_data[current_row]
+            self.update_form. putevka_id = putevka_data[0]
+            self.update_form.ui.lineEdit.setText(str(putevka_data[0]))      
+            self.update_form.ui.lineEdit_2.setText(str(putevka_data[1]))
+            self.update_form.ui.dateEdit.setDate(QDate.fromString(putevka_data[2], 'yyyy-MM-dd'))    
+            self.update_form.ui.dateEdit_2.setDate(QDate.fromString(putevka_data[3], 'yyyy-MM-dd'))
+            self.update_form.ui.lineEdit_3.setText(str(putevka_data[4])) 
+            self.update_form.ui.spinBox.setValue(int(putevka_data[5]))   
+            self.update_form.ui.spinBox_2.setValue(int(putevka_data[6]))
+            self.update_form.ui.lineEdit_4.setText(str(putevka_data[7])) 
             self.update_form.exec()
 
 
@@ -102,14 +122,14 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
     def read_klienti(self):
         # Получаем данные из таблицы klienti
         cursor.execute('SELECT * FROM klienti')
-        klienti_data = cursor.fetchall()
+        self.klienti_data = cursor.fetchall()
         
-        if not klienti_data:
+        if not self.klienti_data:
             print("Нет данных в таблице клиентов")
             return
         
         # Устанавливаем количество строк и столбцов
-        self.ui.tableWidget.setRowCount(len(klienti_data))
+        self.ui.tableWidget.setRowCount(len(self.klienti_data))
         self.ui.tableWidget.setColumnCount(6)  # 6 столбцов в таблице
         
         # Устанавливаем заголовки столбцов
@@ -117,7 +137,7 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
         self.ui.tableWidget.setHorizontalHeaderLabels(headers)
         
         # Заполняем таблицу данными
-        for row, record in enumerate(klienti_data):
+        for row, record in enumerate(self.klienti_data):
             for col in range(6):
                 item = QTableWidgetItem(str(record[col]))
                 self.ui.tableWidget.setItem(row, col, item)
