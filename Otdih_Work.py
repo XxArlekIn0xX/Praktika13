@@ -8,6 +8,28 @@ from DiaKli import Ui_Dialog_Kli as klient_interface
 from DiaPut import Ui_Dialog_Put as putevka_interface
 from DiaZak import Ui_Dialog_Zak as zakaz_interface
 
+class klient_window(QDialog):
+    def __init__(self, parent=None):
+        QDialog.__init__(self, parent)
+        self.ui = klient_interface()
+        self.ui.setupUi(self)
+
+
+
+class putevka_window(QDialog):
+    def __init__(self, parent=None):
+        QDialog.__init__(self, parent)
+        self.ui = putevka_interface()
+        self.ui.setupUi(self)
+
+
+
+class zakaz_window(QDialog):
+    def __init__(self, parent=None):
+        QDialog.__init__(self, parent)
+        self.ui = zakaz_interface()
+        self.ui.setupUi(self)
+
 class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вместо QWidget
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)  # ИЗМЕНЕНО: QMainWindow.__init__
@@ -16,6 +38,40 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
 
         self.read_turistputevki()
         self.ui.comboBox.currentIndexChanged.connect(self.Vibor)
+        self.ui.pushButton.clicked.connect(self.open_add_form)
+        self.ui.tableWidget.itemClicked.connect(self.open_update_form)
+
+    def open_add_form(self):  
+        selected_text = self.ui.comboBox.currentText()
+        if selected_text == "Путевки":
+            self.add_form = putevka_window(self)
+            self.add_form.exec()
+            
+        elif selected_text == "Туристы":
+            self.add_form = klient_window(self)
+            self.add_form.exec()
+            
+        elif selected_text == "Заказы":
+            self.add_form = zakaz_window(self)
+            self.add_form.exec()
+
+
+    def open_update_form(self):  
+        selected_text = self.ui.comboBox.currentText()
+        if selected_text == "Путевки":
+            self.update_form = putevka_window(self)
+            self.update_form.exec()
+
+            
+        elif selected_text == "Туристы":
+            self.update_form = klient_window(self)
+            self.update_form.exec()
+
+            
+        elif selected_text == "Заказы":
+            self.update_form = zakaz_window(self)
+            self.update_form.exec()
+
 
     def Vibor(self, index):
         selected_text = self.ui.comboBox.currentText()

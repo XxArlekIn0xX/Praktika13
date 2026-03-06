@@ -17,8 +17,8 @@
    <widget class="QTableWidget" name="tableWidget">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>50</y>
+      <x>30</x>
+      <y>60</y>
       <width>621</width>
       <height>341</height>
      </rect>
@@ -61,10 +61,10 @@
    <widget class="QComboBox" name="comboBox">
     <property name="geometry">
      <rect>
-      <x>720</x>
+      <x>660</x>
       <y>160</y>
-      <width>73</width>
-      <height>22</height>
+      <width>161</width>
+      <height>51</height>
      </rect>
     </property>
     <item>

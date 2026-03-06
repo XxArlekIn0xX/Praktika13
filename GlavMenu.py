@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
-        self.tableWidget.setGeometry(QtCore.QRect(80, 50, 621, 341))
+        self.tableWidget.setGeometry(QtCore.QRect(30, 60, 621, 341))
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
@@ -33,7 +33,7 @@ class Ui_MainWindow(object):
         self.pushButton.setFont(font)
         self.pushButton.setObjectName("pushButton")
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
-        self.comboBox.setGeometry(QtCore.QRect(720, 160, 73, 22))
+        self.comboBox.setGeometry(QtCore.QRect(660, 160, 161, 51))
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Отдых"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "БД Отдых"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><br/></p></body></html>"))
         self.pushButton.setText(_translate("MainWindow", "Добавить Запись"))
         self.comboBox.setItemText(0, _translate("MainWindow", "Туристы"))
