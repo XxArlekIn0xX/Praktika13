@@ -60,8 +60,19 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
         selected_text = self.ui.comboBox.currentText()
         if selected_text == "Путевки":
             self.update_form = putevka_window(self)
+            current_row = self.ui.tableWidget.currentRow()
+            putevka_data = self.tur_data[current_row]
+            self.update_form. putevka_id = putevka_data[0]
+            self.update_form.ui.lineEdit.setText(str(putevka_data[0]))      
+            self.update_form.ui.lineEdit_2.setText(str(putevka_data[1]))
+            self.update_form.ui.dateEdit.setDate(QDate.fromString(putevka_data[2], 'yyyy-MM-dd'))    
+            self.update_form.ui.dateEdit_2.setDate(QDate.fromString(putevka_data[3], 'yyyy-MM-dd'))
+            self.update_form.ui.lineEdit_3.setText(str(putevka_data[4])) 
+            self.update_form.ui.spinBox.setValue(int(putevka_data[5]))   
+            self.update_form.ui.spinBox_2.setValue(int(putevka_data[6]))
+            self.update_form.ui.lineEdit_4.setText(str(putevka_data[7])) 
             self.update_form.exec()
-
+            
             
         elif selected_text == "Туристы":
             self.update_form = klient_window(self)
