@@ -44,9 +44,6 @@ class Ui_Dialog_Zak(object):
         self.lineEdit_3 = QtWidgets.QLineEdit(self.gridLayoutWidget)
         self.lineEdit_3.setObjectName("lineEdit_3")
         self.gridLayout.addWidget(self.lineEdit_3, 2, 1, 1, 1)
-        self.lineEdit_5 = QtWidgets.QLineEdit(self.gridLayoutWidget)
-        self.lineEdit_5.setObjectName("lineEdit_5")
-        self.gridLayout.addWidget(self.lineEdit_5, 4, 1, 1, 1)
         self.label_5 = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label_5.setObjectName("label_5")
         self.gridLayout.addWidget(self.label_5, 4, 0, 1, 1)
@@ -56,6 +53,9 @@ class Ui_Dialog_Zak(object):
         self.label_3 = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
+        self.dateEdit = QtWidgets.QDateEdit(self.gridLayoutWidget)
+        self.dateEdit.setObjectName("dateEdit")
+        self.gridLayout.addWidget(self.dateEdit, 4, 1, 1, 1)
 
         self.retranslateUi(Dialog_Zak)
         self.buttonBox.accepted.connect(Dialog_Zak.accept) # type: ignore
