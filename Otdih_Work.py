@@ -4,6 +4,9 @@ from PyQt5.QtWidgets import *
 import sys
 import sqlite3
 from GlavMenu import Ui_MainWindow as main_interface
+from DiaKli import Ui_Dialog_Kli as klient_interface
+from DiaPut import Ui_Dialog_Put as putevka_interface
+from DiaZak import Ui_Dialog_Zak as zakaz_interface
 
 class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вместо QWidget
     def __init__(self, parent=None):
