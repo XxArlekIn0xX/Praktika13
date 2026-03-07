@@ -39,10 +39,65 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
         self.read_turistputevki()
         self.ui.comboBox.currentIndexChanged.connect(self.Vibor)
         self.ui.pushButton.clicked.connect(self.open_add_form)
+        self.ui.pushButton_2.clicked.connect(self.delete)
         self.ui.tableWidget.itemClicked.connect(self.open_update_form)
         
 
+    def delete(self):
+        selected_text = self.ui.comboBox.currentText()
+        if selected_text == "Путевки":
+            text, ok = QInputDialog.getText(None, "Удаление записи", "Введите только код путевки:")
+            if ok:
+                text = text.split(', ')
+                if len(text) != 1:
+                    QMessageBox.critical(None, "Error", "Пожалуйста, введите только следующее поле : Код путевки")
+                    return
+                else:
+                    try:
+                        cursor.execute('DELETE FROM turistputevki WHERE idTuristPutevki = ? ', (text[0],))
+                        conn.commit()
+                    except:
+                       QMessageBox.critical(None, "Error", "Запись с таким кодом уже удалена")
+                    self.Vibor(1)
+            else:
+                pass
+            
+        elif selected_text == "Туристы":
+            text, ok = QInputDialog.getText(None, "Удаление записи", "Введите только код туриста:")
 
+            if ok:
+                text = text.split(', ')
+                if len(text) != 1:
+                    QMessageBox.critical(None, "Error", "Пожалуйста, введите только следующее поле : id")
+                    return
+                else:
+                    try:
+                        cursor.execute('DELETE FROM klienti WHERE KodKlienta = ? ', (text[0],))
+                    except:
+                       QMessageBox.critical(None, "Error", "Запись с таким кодом уже удалена")
+                    conn.commit()
+                    self.Vibor(0)
+            else:
+                pass
+            
+        elif selected_text == "Заказы":
+            text, ok = QInputDialog.getText(None, "Удаление записи", "Введите только код заказа:")
+
+            if ok:
+                text = text.split(', ')
+                if len(text) != 1:
+                    QMessageBox.critical(None, "Error", "Пожалуйста, введите только следующее поле : id")
+                    return
+                else:
+                    try:
+                        cursor.execute('DELETE FROM zakaz WHERE idZakaz = ? ', (text[0],))
+                    except:
+                       QMessageBox.critical(None, "Error", "Запись с таким кодом уже удалена")
+                    conn.commit()
+                    self.Vibor(2)
+            else:
+                pass
+        
     def create_putevka(self):
         putevka_data = [
             self.add_form.ui.lineEdit.text(),  
@@ -329,18 +384,19 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
             for row, record in enumerate(self.tur_data):
                 # Формируем текст с проверкой индексов
                 try:
-                    strana = record[1] if len(record) > 1 else "Н/Д"
-                    data_start = record[2] if len(record) > 2 else "Н/Д"
-                    data_end = record[3] if len(record) > 3 else "Н/Д"
-                    komnat = record[4] if len(record) > 4 else 0
-                    pitanie = record[5] if len(record) > 5 else 0
-                    kult = record[6] if len(record) > 6 else 0
-                    price = record[7] if len(record) > 7 else 0
+                    kode = record[0] 
+                    strana = record[1]
+                    data_start = record[2] 
+                    data_end = record[3] 
+                    komnat = record[4] 
+                    pitanie = record[5] 
+                    kult = record[6] 
+                    price = record[7] 
                     
                     pitanie_text = "с питанием" if pitanie == 1 else "без питания"
                     kult_text = "с культурной программой" if kult == 1 else "без культурной программы"
                     
-                    text = (f"{strana} | {data_start} - {data_end}\n"
+                    text = (f"{kode} | {strana} | {data_start} - {data_end}\n"
                            f"Комнат: {komnat}, {pitanie_text}, {kult_text}\n"
                            f"Стоимость за сутки: {price} руб.")
                     
