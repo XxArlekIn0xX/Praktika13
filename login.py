@@ -9,7 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtWidgets import QMessageBox
+import os
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -64,8 +65,15 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
+        self.pushButton.clicked.connect(MainWindow.close) # type: ignore
+        self.pushButton_2.clicked.connect(self.Open)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+    def Open(self):
+        if self.lineEdit.text() == "Alexey" and self.lineEdit_2.text() == "123456":
+            os.startfile("Otdih_Work.py")
+            os.kill("login.py")
+        else:
+            QMessageBox.critical(None, "Error", "Неверный логин или пароль")
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Login"))
