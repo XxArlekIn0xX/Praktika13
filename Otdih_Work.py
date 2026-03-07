@@ -63,7 +63,7 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
             try:
                 cursor.execute('INSERT INTO turistputevki VALUES(?, ?, ?, ?, ?, ?, ?, ?)', putevka_data)
                 conn.commit()
-
+                self.Vibor(1)
                 QMessageBox.information(self, 'Действие выполнено', 'Путевка была добавлена', QMessageBox.Ok)
                 return
             except:
@@ -87,7 +87,7 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
             try:
                 cursor.execute('INSERT INTO klienti VALUES(?, ?, ?, ?, ?, ?)', turist_data)
                 conn.commit()
-
+                self.Vibor(0)
                 QMessageBox.information(self, 'Действие выполнено', 'Турист был добавлен', QMessageBox.Ok)
                 return
             except:
@@ -110,7 +110,7 @@ class main_window(QMainWindow):        # ИЗМЕНЕНО: QMainWindow вмес�
             try:
                 cursor.execute('INSERT INTO zakaz VALUES(?, ?, ?, ?, ?)', zakaz_data)
                 conn.commit()
-
+                self.Vibor(2)
                 QMessageBox.information(self, 'Действие выполнено', 'Заказ была добавлен', QMessageBox.Ok)
                 return
             except:
